@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-import logo from "../assets/bootstrap.png";
+import logo from "../assets/deposit.jpg";
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
@@ -23,10 +23,10 @@ const Header = () => {
 
     return (
     <>
-    <Navbar color="dark" dark expand="md">
+    <Navbar color="primary" dark expand="md">
         <NavbarBrand>
         <img src={logo} width="50px;" style={{paddingRight: "5px"}}/>
-        MIT Full Stack 2025
+        Aquário de Cuiabá
         </NavbarBrand>
         <NavbarToggler onClick={toggle}/>
         <Collapse isOpen={isOpen} navbar>

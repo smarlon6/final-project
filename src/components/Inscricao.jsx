@@ -1,46 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Card, Form, FormGroup, Input, Label, Button, Alert, Spinner } from 'reactstrap';
 
 const InscricaoAquario = () => {
   const [formData, setFormData] = useState({
     nome: '',
     telefone: '',
+    cep: '',
     bairro: '',
-    cidade: ''
+    cidade: '',
+    estado: '',
+    rua: ''
   });
   const [submitted, setSubmitted] = useState(false);
-  const [bairros, setBairros] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchBairros = async () => {
+  const handleCepChange = async (e) => {
+    const cep = e.target.value.replace(/\D/g, '');
+    if (cep.length === 8) {
       try {
-        const response = await fetch("https://api.npoint.io/d69fb7827d9de4312069");
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
         if (!response.ok) {
-          throw new Error("Erro ao buscar os dados");
+          throw new Error("Erro ao buscar o CEP");
         }
         const data = await response.json();
-  
-        // Garante que estamos setando apenas a lista de bairros
-        if (data.bairros && Array.isArray(data.bairros)) {
-          setBairros(data.bairros);
+        if (!data.erro) {
+          setFormData({
+            ...formData,
+            cep,
+            bairro: data.bairro,
+            cidade: data.localidade,
+            estado: data.uf,
+            rua: data.logradouro
+          });
         } else {
-          throw new Error("Formato de dados inválido");
+          setError("CEP não encontrado");
         }
       } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+        setError("Erro ao buscar CEP");
       }
-    };
-  
-    fetchBairros();
-  }, []);
+    } else {
+      setFormData({ ...formData, cep });
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.nome || !formData.telefone || !formData.bairro || !formData.cidade) {
+    if (!formData.nome || !formData.telefone || !formData.cep || !formData.bairro || !formData.cidade || !formData.estado || !formData.rua) {
       setError("Todos os campos são obrigatórios.");
       return;
     }
@@ -48,18 +53,9 @@ const InscricaoAquario = () => {
     setSubmitted(true);
   };
 
-  if (loading) {
-    return (
-      <Container>
-        <Spinner color="primary" />
-        <p>Carregando Bairros...</p>
-      </Container>
-    );
-  }
-
   return (
     <Container>
-      <h2>Inscrição para Visitação ao Aquário Cuiabá</h2>
+      <h2>Formulário de Inscrição</h2>
       <Form onSubmit={handleSubmit}>
         <Card body>
           {error && <Alert color="danger">{error}</Alert>}
@@ -91,23 +87,35 @@ const InscricaoAquario = () => {
             />
           </FormGroup>
           <FormGroup>
+            <Label for="cep">CEP</Label>
+            <Input
+              name="cep"
+              type="text"
+              placeholder="CEP"
+              value={formData.cep}
+              onChange={handleCepChange}
+              required
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="rua">Rua</Label>
+            <Input
+              name="rua"
+              type="text"
+              placeholder="Rua"
+              value={formData.rua}
+              readOnly
+            />
+          </FormGroup>
+          <FormGroup>
             <Label for="bairro">Bairro</Label>
             <Input
               name="bairro"
-              type="select"
+              type="text"
+              placeholder="Bairro"
               value={formData.bairro}
-              onChange={(e) => setFormData({ ...formData, bairro: e.target.value })}
-              required
-            >
-              <option value="">Selecionar bairro</option>
-              {bairros.length > 0 ? (
-                bairros.map((bairro, index) => (
-                  <option key={index} value={bairro}>{bairro}</option>
-                ))
-              ) : (
-                <option value="">Nenhum bairro disponível</option>
-              )}
-            </Input>
+              readOnly
+            />
           </FormGroup>
           <FormGroup>
             <Label for="cidade">Cidade</Label>
@@ -116,8 +124,17 @@ const InscricaoAquario = () => {
               type="text"
               placeholder="Cidade"
               value={formData.cidade}
-              onChange={(e) => setFormData({ ...formData, cidade: e.target.value })}
-              required
+              readOnly
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="estado">Estado</Label>
+            <Input
+              name="estado"
+              type="text"
+              placeholder="Estado"
+              value={formData.estado}
+              readOnly
             />
           </FormGroup>
           <Button color="primary" type="submit">Enviar Inscrição</Button>

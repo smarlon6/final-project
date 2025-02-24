@@ -26,8 +26,8 @@ function App() {
             <Route path="/inscricao" element={<Inscricao/>} />
           </Routes>
       </Container>
-      <footer>
-        INFINET - MIT Full Stack 2025
+      <footer className="bg-primary text-white text-center p-3">
+        INFNET - MIT Full Stack 2025
       </footer>
       </div>
 
