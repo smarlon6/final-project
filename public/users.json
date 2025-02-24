@@ -1,0 +1,42 @@
+[
+  {
+    "nome": "João dos Santos",
+    "idade": 29,
+    "profissao": "Analista",
+    "cidade": "Chapecó",
+    "admin": false,
+    "avatar": "https://i.pravatar.cc/150?img=51"
+  },
+  {
+    "nome": "Maria Oliveira",
+    "idade": 35,
+    "profissao": "Desenvolvedora",
+    "cidade": "São Paulo",
+    "admin": true,
+    "avatar": "https://i.pravatar.cc/150?img=2"
+  },
+  {
+    "nome": "Carlos Lima",
+    "idade": 41,
+    "profissao": "Gerente",
+    "cidade": "Rio de Janeiro",
+    "admin": false,
+    "avatar": "https://i.pravatar.cc/150?img=53"
+  },
+  {
+    "nome": "Ana Souza",
+    "idade": 27,
+    "profissao": "Designer",
+    "cidade": "Florianópolis",
+    "admin": true,
+    "avatar": "https://i.pravatar.cc/150?img=48"
+  },
+  {
+    "nome": "Regina Santos",
+    "idade": 27,
+    "profissao": "Designer",
+    "cidade": "Florianópolis",
+    "admin": true,
+    "avatar": "https://i.pravatar.cc/150?img=5"
+  }
+]
